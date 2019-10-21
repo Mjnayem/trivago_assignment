@@ -35,7 +35,15 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {
 
         Route::get('logout', '\App\Http\Controllers\Auth\AuthController@logout');
 
-        
+
+
+        Route::group(['prefix' => 'user'], function () {
+
+            Route::post('addItem', [
+                'as' => 'addItem',
+                'uses' => '\App\Http\Controllers\ItemController@addItemUser'
+            ]);
+        });
     });
 
 });

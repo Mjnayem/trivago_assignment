@@ -18,7 +18,7 @@ class CreateItemsTable extends Migration
             $table->string('name',250);
             $table->integer('rating')->default(0);
 
-            $table->bigInteger('category_id')->unsigned();
+            $table->bigInteger('category')->unsigned();
             $table->bigInteger('location_id')->unsigned();
 
             $table->text('image_url')->nullable();
@@ -27,9 +27,6 @@ class CreateItemsTable extends Migration
             $table->unsignedBigInteger('price')->default(0);
             $table->unsignedBigInteger('availability')->default(0);
             $table->timestamps();
-
-//            $table->foreign('category_id')->references('id')->on('categories');
-//            $table->foreign('location_id')->references('id')->on('locations');
         });
     }
 
