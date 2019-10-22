@@ -34,10 +34,12 @@ class ItemController extends Controller
                 $response['message'] = "Validation Error!";
                 return response()->json($response, 422);
             }
+
             if(!$this->validateItemsName($input['name'])){
                 $response['message'] = "Name can not contain keywords [Free, Offer, Book, Website]";
                 return response()->json($response, 400);
             }
+
             $user = new User();
             $userID = Auth::user()->id;
             $userExist = $user->where('id',$userID)->first();
@@ -56,8 +58,6 @@ class ItemController extends Controller
             $locations->address = $input['address'];
             $locations->save();
             $locationId = $locations->id;
-
-
 
             $item = new Item();
             $item->name = $input['name'];
@@ -85,8 +85,6 @@ class ItemController extends Controller
         }
 
         return response()->json($response, 200);
-
-
     }
 
     public function updateItem(AddItemRequest $request,$itemId){
@@ -164,7 +162,6 @@ class ItemController extends Controller
     public function deleteItem($itemId){
 
         try {
-
             $response = Config::get('global.response_format');
 
             $item = new Item();
@@ -203,8 +200,6 @@ class ItemController extends Controller
             $items = new Item();
             $data = $items->with('location')->find($itemId);
 
-
-
             if(!$data) {
                 $response['message'] = 'Item not found!';
                 return response()->json($response, 200);
@@ -218,7 +213,6 @@ class ItemController extends Controller
             $response['data'] = $data;
             $response['status'] = 'success';
             $response['message'] = 'Item found!';
-
         } catch (\Throwable $e) {
             DB::rollback();
             $response['message'] = $e->getMessage();

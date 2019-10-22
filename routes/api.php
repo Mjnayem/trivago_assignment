@@ -13,10 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {
 
     Route::post('register', [
@@ -38,10 +34,6 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
 
         Route::get('logout', '\App\Http\Controllers\Auth\AuthController@logout');
-
-
-
-
 
         Route::group(['prefix' => 'user'], function () {
 
