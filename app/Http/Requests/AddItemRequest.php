@@ -27,7 +27,7 @@ class AddItemRequest extends FormRequest
         return [
 //            'name' => 'required|string|min:11|regex:/^(?!(free|Offer|Book|Website))*$/',
             'name' => 'required|string|min:11',
-            'hotelier_id' => 'required|integer',
+//            'hotelier_id' => 'required|integer',
             'rating' => 'required|integer|between:0,5',
             'category' => 'required|string',
 //
@@ -40,7 +40,7 @@ class AddItemRequest extends FormRequest
             'country' => 'required|string|max:128',
             'zip_code' => 'required|integer|min:10000|max:99999',
             'address' => 'required|string|max:128',
-        
+
         ];
     }
 

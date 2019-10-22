@@ -13,10 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {
 
     Route::post('register', [
@@ -29,19 +25,41 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {
         'uses' => '\App\Http\Controllers\Auth\LoginController@login'
     ]);
 
+    Route::get('bookItem/{itemId}', [
+        'as' => 'bookItem',
+        'uses' => 'ItemController@bookItem'
+    ]);
 
 
     Route::group(['middleware' => 'auth:api'], function () {
 
         Route::get('logout', '\App\Http\Controllers\Auth\AuthController@logout');
 
-
-
         Route::group(['prefix' => 'user'], function () {
 
             Route::post('addItem', [
                 'as' => 'addItem',
                 'uses' => 'ItemController@addItemUser'
+            ]);
+
+            Route::post('updateItem/{itemId}', [
+                'as' => 'updateItem',
+                'uses' => 'ItemController@updateItem'
+            ]);
+
+            Route::get('deleteItem/{itemId}', [
+                'as' => 'deleteItem',
+                'uses' => 'ItemController@deleteItem'
+            ]);
+
+            Route::get('getSingleItem/{itemId}', [
+                'as' => 'getSingleItem',
+                'uses' => 'ItemController@getSingleItem'
+            ]);
+
+            Route::get('getItemByUser/{userId}', [
+                'as' => 'getItemByUser',
+                'uses' => 'ItemController@getItemByUser'
             ]);
         });
     });

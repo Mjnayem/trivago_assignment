@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -14,10 +15,10 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        \Illuminate\Validation\ValidationException::class,
     ];
-    
-    
+
+
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -37,32 +38,22 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if ($exception instanceof OAuthServerException) {
-            try {
-                $logger = $this->container->make(LoggerInterface::class);
-            } catch (Exception $e) {
-                throw $exception; // throw the original exception
-            }
-        
-            $logger->error(
-                $exception->getMessage(),
-                ['exception' => $exception]
-            );
-        } else {
+
             parent::report($exception);
-        }
     }
-    
+
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-    
+
         $response['status'] = 'error';
         $response['content-type'] = 'application/json';
         $response['message'] = 'Unauthorized';
         $response['date'] = date('Y-m-d H:i:s');
-       
+
         return response()->json($response, 200);
     }
+
+
 
     /**
      * Render an exception into an HTTP response.
@@ -73,6 +64,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        //instance of ValidationException
+        if($exception instanceof  ValidationException) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => 'error',
+                    'data' => [],
+                    'message' => $exception->validator->getMessageBag()
+                ], 422);
+            }
+        }
+
         return parent::render($request, $exception);
     }
 }

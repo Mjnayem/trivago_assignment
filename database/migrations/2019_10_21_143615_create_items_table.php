@@ -18,17 +18,17 @@ class CreateItemsTable extends Migration
             $table->string('name',250);
             $table->integer('rating')->default(0);
 
-            $table->string('category',128)->unsigned();
+            $table->string('category',128);
             $table->bigInteger('location_id')->unsigned();
-            $table->bigInteger('hotelier_id')->unsigned();
+            $table->unsignedBigInteger('hotelier_id');
 
-            $table->text('image_url')->nullable();
+            $table->text('image')->nullable();
             $table->unsignedBigInteger('reputation')->default(0);
-            $table->enum('reputation_badge',array('red','green','yellow'))->default('red');
+            $table->enum('reputationBadge',array('red','green','yellow'))->default('red');
             $table->unsignedBigInteger('price')->default(0);
             $table->unsignedBigInteger('availability')->default(0);
             $table->timestamps();
-    
+
             $table->foreign('location_id')->references('id')->on('locations');
         });
     }
