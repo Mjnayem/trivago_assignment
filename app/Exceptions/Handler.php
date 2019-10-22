@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -15,6 +16,8 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         //
     ];
+    
+    
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -34,7 +37,31 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        parent::report($exception);
+        if ($exception instanceof OAuthServerException) {
+            try {
+                $logger = $this->container->make(LoggerInterface::class);
+            } catch (Exception $e) {
+                throw $exception; // throw the original exception
+            }
+        
+            $logger->error(
+                $exception->getMessage(),
+                ['exception' => $exception]
+            );
+        } else {
+            parent::report($exception);
+        }
+    }
+    
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+    
+        $response['status'] = 'error';
+        $response['content-type'] = 'application/json';
+        $response['message'] = 'Unauthorized';
+        $response['date'] = date('Y-m-d H:i:s');
+       
+        return response()->json($response, 200);
     }
 
     /**

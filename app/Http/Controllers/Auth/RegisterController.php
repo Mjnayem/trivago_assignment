@@ -46,7 +46,6 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request) {
 
-
         try {
 
             $response = Config::get('global.response_format');

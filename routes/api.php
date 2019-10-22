@@ -41,7 +41,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {
 
             Route::post('addItem', [
                 'as' => 'addItem',
-                'uses' => '\App\Http\Controllers\ItemController@addItemUser'
+                'uses' => 'ItemController@addItemUser'
             ]);
         });
     });

@@ -25,14 +25,22 @@ class AddItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'rating' => 'required|integer',
+//            'name' => 'required|string|min:11|regex:/^(?!(free|Offer|Book|Website))*$/',
+            'name' => 'required|string|min:11',
+            'hotelier_id' => 'required|integer',
+            'rating' => 'required|integer|between:0,5',
             'category' => 'required|string',
-            'location_id' => 'required|integer',
-            'image_url' => 'required|string',
-            'reputation' => 'required|integer',
+//
+           'image_url' => 'required|string|regex:/^(http(s)?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+            'reputation' => 'required|integer|between:0,1000',
             'price' => 'required|integer',
             'availability' => 'required|integer',
+            'city' => 'required|string|max:128',
+            'state' => 'required|string|max:128',
+            'country' => 'required|string|max:128',
+            'zip_code' => 'required|integer|min:10000|max:99999',
+            'address' => 'required|string|max:128',
+        
         ];
     }
 
