@@ -34,6 +34,10 @@ class ItemController extends Controller
                 $response['message'] = "Validation Error!";
                 return response()->json($response, 422);
             }
+            if(!$this->validateItemsName($input['name'])){
+                $response['message'] = "Name can not contain keywords [Free, Offer, Book, Website]";
+                return response()->json($response, 422);
+            }
             $user = new User();
             $userExist = $user->where('id',$input['hotelier_id'])->first();
             if(!$userExist){
@@ -83,9 +87,13 @@ class ItemController extends Controller
 
     }
     
-    protected function validateItemsConditions($input){
-//        if($input[''])
-    
+    protected function validateItemsName($name){
+        $lowerFormattedName = strtolower($name);
+        if (preg_match("/^((?!(free|offer|website|book)).)*$/",$lowerFormattedName)) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
